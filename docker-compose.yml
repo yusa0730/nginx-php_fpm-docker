@@ -6,8 +6,11 @@ services:
       context: ./php-fpm
     volumes:
       - ./php-fpm/src:/var/www/html
-    expose:
-      - 9000
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - backend
 
   nginx:
     build:
@@ -18,4 +21,25 @@ services:
       - ./php-fpm/src:/var/www/html
     depends_on:
       - php-fpm
+    networks:
+      - backend
 
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - backend
+
+networks:
+  backend:
