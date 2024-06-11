@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  php-fpm:
+    build:
+      context: ./php-fpm
+    volumes:
+      - ./php-fpm/src:/var/www/html
+    expose:
+      - 9000
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./php-fpm/src:/var/www/html
+    depends_on:
+      - php-fpm
+
