@@ -7,12 +7,13 @@ services:
     volumes:
       - ./php-fpm/src:/var/www/html
     environment:
-      DB_HOST: ${DB_HOST}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
+      DB_HOST: mysql
+      DB_USER: myuser
+      DB_PASSWORD: mypassword
+      DB_NAME: mydatabase
+      DB_PORT: 3306
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     depends_on:
       mysql:
         condition: service_healthy
