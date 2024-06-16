@@ -10,13 +10,6 @@ RUN pecl update-channels \
     && pecl install redis \
     && docker-php-ext-enable redis
 
-# Composerのインストール
-# COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
 WORKDIR /var/www/html
-
-# ComposerでPredisをインストール
-# RUN composer require predis/predis
-
 
 COPY src/ /var/www/html
